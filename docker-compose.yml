@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "diplom"
+      POSTGRES_USER: "ypxd"
+      POSTGRES_PASSWORD: "123qweasd"
+      PGDATA: "/var/lib/postgresql/diplom/data/pgdata"
+    volumes:
+      - .:/var/lib/postgresql/diplom/data
+    ports:
+      - "5432:5432"
