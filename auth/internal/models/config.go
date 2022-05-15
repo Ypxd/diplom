@@ -10,6 +10,12 @@ type Config struct {
 	Server Server           `json:"server"`
 	Logger shared.LoggerCfg `json:"log_params"`
 	DB     DB               `json:"db"`
+	Auth   Auth             `json:"auth"`
+}
+
+type Auth struct {
+	SessionTime time.Duration `json:"session_time"`
+	TokenSecret string        `json:"token_secret"`
 }
 
 type Redis struct {

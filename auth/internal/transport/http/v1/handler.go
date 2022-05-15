@@ -15,8 +15,10 @@ func NewHandler(services *service.Service) *Handler {
 	}
 }
 func (h *Handler) InitRoutes(api *gin.RouterGroup) {
-	v1 := api.Group("/v1")
+	v1 := api.Group("")
 	{
 		h.initAuthRoutes(v1)
+		h.initEventsRoutes(v1)
+		h.initTagsRoutes(v1)
 	}
 }

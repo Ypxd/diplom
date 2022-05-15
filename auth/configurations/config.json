@@ -33,5 +33,9 @@
     "address": "localhost:6379",
     "password": "",
     "r_timeout": 30
+  },
+  "auth": {
+    "token_secret": "V61011",
+    "session_time": 10
   }
 }
