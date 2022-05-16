@@ -13,7 +13,7 @@ type Events struct {
 func (e *Events) AllEvents(ctx context.Context) ([]models.Events, error) {
 	var res []models.Events
 	const query = `
-		SELECT title, address, png
+		SELECT title, address, tags, png
 		FROM tags.events
 `
 
@@ -23,6 +23,21 @@ func (e *Events) AllEvents(ctx context.Context) ([]models.Events, error) {
 	}
 
 	return res, nil
+}
+
+func (e *Events) GetEventsTag(ctx context.Context, t string) (string, error) {
+	var res []models.Events
+	const query = `
+		SELECT title, address, tags, png
+		FROM tags.events WHERE title = $1
+`
+
+	err := e.db.SelectContext(ctx, &res, query, t)
+	if err != nil {
+		return "", err
+	}
+
+	return res[0].Tags, nil
 }
 
 func NewEventsRepo(db *sqlx.DB) *Events {

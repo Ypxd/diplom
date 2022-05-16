@@ -6,11 +6,12 @@ import (
 )
 
 type Config struct {
-	Redis  Redis            `json:"redis"`
-	Server Server           `json:"server"`
-	Logger shared.LoggerCfg `json:"log_params"`
-	DB     DB               `json:"db"`
-	Auth   Auth             `json:"auth"`
+	Redis       Redis            `json:"redis"`
+	Server      Server           `json:"server"`
+	Logger      shared.LoggerCfg `json:"log_params"`
+	DB          DB               `json:"db"`
+	Auth        Auth             `json:"auth"`
+	RepeatCount int64            `json:"repeat_count"`
 }
 
 type Auth struct {

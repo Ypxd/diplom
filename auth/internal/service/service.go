@@ -15,13 +15,15 @@ type Auth interface {
 }
 
 type Events interface {
-	GetAllEvents(ctx context.Context) ([]models.Events, error)
+	GetAllEvents(ctx context.Context) (models.EventsResponse, error)
+	GetEvents(ctx context.Context, req []models.AllTags, userID string) ([]models.MyEvents, error)
 }
 
 type Tags interface {
 	GetAllTags(ctx context.Context) ([]models.AllTags, error)
 	GetUnfavoriteTags(ctx context.Context, userID string) ([]models.AllTags, error)
 	UpdateUnfavoriteTags(ctx context.Context, req []models.AllTags, userID string) error
+	UpdateFavoriteTags(ctx context.Context, req models.MyEvents, userID string) error
 }
 
 type Service struct {

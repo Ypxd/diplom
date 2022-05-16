@@ -12,7 +12,7 @@ type Tags struct {
 	db *sqlx.DB
 }
 
-func (t *Tags) UpdateUnfavoriteTagsTags(ctx context.Context, req []models.AllTags, userID string) error {
+func (t *Tags) UpdateUnfavoriteTags(ctx context.Context, req []models.AllTags, userID string) error {
 	const query = `
 		UPDATE auth.users SET uf_tags = $1 WHERE user_id = $2
 `
@@ -24,6 +24,19 @@ func (t *Tags) UpdateUnfavoriteTagsTags(ctx context.Context, req []models.AllTag
 			s = s + ";" + strconv.FormatInt(r.ID, 10)
 		}
 	}
+
+	_, err := t.db.ExecContext(ctx, query, s, userID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *Tags) UpdateFavoriteTags(ctx context.Context, s string, userID string) error {
+	const query = `
+		UPDATE auth.users SET f_tags = $1 WHERE user_id = $2
+`
 
 	_, err := t.db.ExecContext(ctx, query, s, userID)
 	if err != nil {
@@ -48,7 +61,9 @@ func (t *Tags) UserUnfavoriteTags(ctx context.Context, userID string) ([]string,
 	}
 
 	if len(s) != 0 {
-		res = strings.Split(s[0], ";")
+		if s[0] != "" {
+			res = strings.Split(s[0], ";")
+		}
 	}
 
 	return res, nil
@@ -77,7 +92,7 @@ func (t *Tags) AllUnfavoriteTagsTags(ctx context.Context, str []string) ([]model
 func (t *Tags) AllTags(ctx context.Context) ([]models.AllTags, error) {
 	var res []models.AllTags
 	const query = `
-		SELECT id, title FROM tags.tags
+		SELECT id, title, val FROM tags.tags
 `
 
 	err := t.db.SelectContext(ctx, &res, query)

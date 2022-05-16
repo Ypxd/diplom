@@ -55,43 +55,49 @@ func (a *AuthService) UserInfo(ctx context.Context, userID string) (models.UserI
 		return models.UserInfo{}, err
 	}
 
-	ft := strings.Split(usr.FTags, ";")
-	if len(ft) == 0 {
-		usr.FTags = ""
-	}
-	fTags, err := a.repo.Tags.AllUnfavoriteTagsTags(ctx, ft)
-	if err != nil {
-		return models.UserInfo{}, err
-	}
-	s := ""
-	for _, t := range fTags {
-		if s == "" {
-			s = s + t.Title
+	if usr.FTags != "" {
+		ft := strings.Split(usr.FTags, ";")
+		if len(ft) == 0 {
+			usr.FTags = ""
 		} else {
-			s = s + ", " + t.Title
+			fTags, err := a.repo.Tags.AllUnfavoriteTagsTags(ctx, ft)
+			if err != nil {
+				return models.UserInfo{}, err
+			}
+			s := ""
+			for _, t := range fTags {
+				if s == "" {
+					s = s + t.Title
+				} else {
+					s = s + ", " + t.Title
+				}
+			}
+			s = s + "."
+			usr.FTags = s
 		}
 	}
-	s = s + "."
-	usr.FTags = s
 
-	uft := strings.Split(usr.UFTags, ";")
-	if len(uft) == 0 {
-		usr.UFTags = ""
-	}
-	ufTags, err := a.repo.Tags.AllUnfavoriteTagsTags(ctx, uft)
-	if err != nil {
-		return models.UserInfo{}, err
-	}
-	s = ""
-	for _, t := range ufTags {
-		if s == "" {
-			s = s + t.Title
+	if usr.UFTags != "" {
+		uft := strings.Split(usr.UFTags, ";")
+		if len(uft) == 0 {
+			usr.UFTags = ""
 		} else {
-			s = s + ", " + t.Title
+			ufTags, err := a.repo.Tags.AllUnfavoriteTagsTags(ctx, uft)
+			if err != nil {
+				return models.UserInfo{}, err
+			}
+			s := ""
+			for _, t := range ufTags {
+				if s == "" {
+					s = s + t.Title
+				} else {
+					s = s + ", " + t.Title
+				}
+			}
+			s = s + "."
+			usr.UFTags = s
 		}
 	}
-	s = s + "."
-	usr.UFTags = s
 
 	return *usr, nil
 }

@@ -37,5 +37,6 @@
   "auth": {
     "token_secret": "V61011",
     "session_time": 10
-  }
+  },
+  "repeat_count": 4
 }

@@ -1,18 +1,22 @@
 package models
 
-type EventsRequest struct {
-	JWTToken string   `json:"jwt_token"`
-	Tags     []string `json:"tags,omitempty"`
-}
-
-type EventsResponse struct {
-	Title   string `json:"title"`
-	Address string `json:"address"`
-	PNG     []byte `json:"png"`
-}
-
 type Events struct {
 	Title   string `json:"title"`
 	Address string `json:"address"`
+	Tags    string `json:"tags"`
 	PNG     string `json:"png"`
+}
+
+type EventsResponse struct {
+	AllEvents int      `json:"all_events"`
+	AllTags   int      `json:"all_tags"`
+	Events    []Events `json:"events"`
+}
+
+type MyEvents struct {
+	Title   string `json:"title"`
+	Address string `json:"address"`
+	Tags    string `json:"tags"`
+	PNG     string `json:"png"`
+	Val     int    `json:"val"`
 }
