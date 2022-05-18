@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"github.com/Ypxd/diplom/auth/internal/models"
+	"math"
 	"sort"
 	"strconv"
 	"strings"
@@ -111,6 +112,16 @@ func (e *EventsService) GetEvents(ctx context.Context, req []models.AllTags, use
 		return nil, err
 	}
 
+	if usrInfo.Age == "13-35" {
+		usrInfo.Age = "2"
+	} else if usrInfo.Age == "< 18" {
+		usrInfo.Age = "1"
+	} else if usrInfo.Age == "> 35" {
+		usrInfo.Age = "3"
+	} else {
+		usrInfo.Age = "2"
+	}
+
 	result := make([]models.MyEvents, 0)
 	for _, r := range res {
 		var (
@@ -136,6 +147,16 @@ func (e *EventsService) GetEvents(ctx context.Context, req []models.AllTags, use
 		myE.Address = r.Address
 		myE.PNG = r.PNG
 		myE.Val = 0
+
+		age, _ := strconv.ParseInt(usrInfo.Age, 10, 64)
+		switch math.Abs(float64(r.Age - age)) {
+		case 0:
+			myE.Val += 30
+		case 1:
+			myE.Val += 15
+		case 2:
+			myE.Val -= 15
+		}
 
 		for _, a := range ary {
 			for _, mr := range req {
@@ -185,11 +206,6 @@ func (e *EventsService) GetEvents(ctx context.Context, req []models.AllTags, use
 	})
 
 	return result, nil
-}
-
-func updateRedis(ctx context.Context, req []models.AllTags, userID string) error {
-
-	return nil
 }
 
 func NewEventsService(repo *repository.Repository, conn *sqlx.DB) *EventsService {

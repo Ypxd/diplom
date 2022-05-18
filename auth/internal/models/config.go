@@ -12,6 +12,7 @@ type Config struct {
 	DB          DB               `json:"db"`
 	Auth        Auth             `json:"auth"`
 	RepeatCount int64            `json:"repeat_count"`
+	MaxEvents   int64            `json:"max_events"`
 }
 
 type Auth struct {

@@ -1,10 +1,12 @@
 package models
 
 type Events struct {
-	Title   string `json:"title"`
-	Address string `json:"address"`
-	Tags    string `json:"tags"`
-	PNG     string `json:"png"`
+	Title    string `json:"title"`
+	Address  string `json:"address"`
+	Tags     string `json:"tags"`
+	PNG      string `json:"png"`
+	Age      int64  `json:"age_id" db:"age_id"`
+	Selected string `json:"selected"`
 }
 
 type EventsResponse struct {

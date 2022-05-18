@@ -28,7 +28,7 @@ func (t *TagsService) GetUnfavoriteTags(ctx context.Context, userID string) ([]m
 }
 
 func (t *TagsService) UpdateFavoriteTags(ctx context.Context, req models.MyEvents, userID string) error {
-	tags, err := t.repo.Events.GetEventsTag(ctx, req.Title)
+	tags, err := t.repo.Events.GetEventsTag(ctx, req.Title, userID)
 	if err != nil {
 		return err
 	}

@@ -24,7 +24,7 @@ type Auth interface {
 
 type Events interface {
 	AllEvents(ctx context.Context) ([]models.Events, error)
-	GetEventsTag(ctx context.Context, t string) (string, error)
+	GetEventsTag(ctx context.Context, t string, userID string) (string, error)
 }
 
 type Tags interface {

@@ -53,6 +53,7 @@ func (h *Handler) getEvent(c *gin.Context) {
 		response(c, http.StatusInternalServerError, err, result, nil)
 		return
 	}
+	result = append(result[:utils.GetConfig().MaxEvents], result[len(result):]...)
 
 	response(c, http.StatusOK, err, result, nil)
 	return

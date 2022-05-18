@@ -17,7 +17,7 @@ type Auth struct {
 func (a *Auth) Age(ctx context.Context, req models.AuthReq) (int64, error) {
 	const query = `
 		SELECT id FROM auth.age
-		WHERE $1 > min AND $1 < max
+		WHERE $1 > min AND $1 <= max
 `
 	age := make([]int64, 0)
 	i, err := strconv.ParseInt(*req.Age, 10, 64)
@@ -55,11 +55,11 @@ func (a *Auth) ChangePass(ctx context.Context, req models.ChangePassReq, userID 
 
 func (a *Auth) Register(ctx context.Context, req models.AuthReq, age int64) (string, error) {
 	const query = `
-		INSERT INTO auth."users" (user_id, login, password, email, name, age_id)
-		VALUES ($1, $2, $3, $4, $5, $6)
+		INSERT INTO auth."users" (user_id, login, password, email, name, age_id, f_tags, uf_tags)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 `
 
-	_, err := a.db.ExecContext(ctx, query, uuid.New(), req.Login, req.Password, req.Email, req.Name, age)
+	_, err := a.db.ExecContext(ctx, query, uuid.New(), req.Login, req.Password, req.Email, req.Name, age, "", "")
 	if errPq, ok := err.(*pq.Error); ok {
 		myError := errors.New("такой " + errPq.Constraint + " уже существует")
 		return "", myError
